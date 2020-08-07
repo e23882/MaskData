@@ -51,7 +51,7 @@ def rakuten():
             foundItemCount = foundItemCount + 1
             if (str(item['brand']) == 'CSD中衛' and '口罩' in str(item['prod_name'])):
                 print(str(item['prod_name']) + '\r\n' + str(item['prod_url']))
-                lineNotifyMessage("nYHTBONuCdLCjC0cEGMHYbPYd9TLbEX75e7r3n9o9FK", str(item['prod_name']),
+                lineNotifyMessage("fK4xZMV7HsgejH8h7dESqKshxSUqhgizPa8FiGzUJuN", str(item['prod_name']),
                                   str(item['prod_url']))
                 # call Leo for debug
                 lineNotifyMessage("FQdRLF5IMZFyXXuUIFPcYFnnh4Cw8CkKr9fmNcrIiol", str(item['prod_name']),
@@ -86,7 +86,7 @@ def Costco():
                 pass
             else:
                 if 'CSD' in str(item.contents[1]) and '口罩' in str(item.contents[1]):
-                    lineNotifyMessage('nYHTBONuCdLCjC0cEGMHYbPYd9TLbEX75e7r3n9o9FK',
+                    lineNotifyMessage('fK4xZMV7HsgejH8h7dESqKshxSUqhgizPa8FiGzUJuN',
                                       str(item.contents[1].attrs['title']),
                                       'https://www.costco.com.tw/' + str(item.contents[1].attrs['href']))
                     lineNotifyMessage('FQdRLF5IMZFyXXuUIFPcYFnnh4Cw8CkKr9fmNcrIiol',
@@ -126,7 +126,7 @@ def wastons():
                 if ('暫無存貨' not in str(item.contents[0])):
                     if ('口罩' in item.attrs['href'] and '中衛' in item.attrs['href']):
                         # benny
-                        lineNotifyMessage("nYHTBONuCdLCjC0cEGMHYbPYd9TLbEX75e7r3n9o9FK", str(item.attrs['href']),
+                        lineNotifyMessage("fK4xZMV7HsgejH8h7dESqKshxSUqhgizPa8FiGzUJuN", str(item.attrs['href']),
                                           str(item['href']))
                         # leo
                         lineNotifyMessage('FQdRLF5IMZFyXXuUIFPcYFnnh4Cw8CkKr9fmNcrIiol', str(item.attrs['href']),
