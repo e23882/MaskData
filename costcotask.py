@@ -230,6 +230,6 @@ def GetRakutenMaskDataTask():
 
 
 if __name__ == '__main__':
-    wastons()
+    GetCostcoMaskDataTask()
 # GetWastonMaskDataTask()
 # GetRakutenMaskDataTask()
