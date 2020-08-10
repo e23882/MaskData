@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup as bs
 import datetime
 from datetime import datetime, timedelta
 import random
+import re
 
 
 # LineNotify相關
@@ -41,25 +42,32 @@ def rakuten():
     resp = requests.get(url, headers=headers)
     if resp.status_code == 200:
         result = resp.text
-        startIndex = result.index('page_products')
+        startIndex = result.index('page_products":')
         endIndex = result.index('page_cat')
         tempData = result[startIndex:endIndex]
-        data = tempData[tempData.index('['):tempData.index(']') + 1]
-        jsonData = json.loads(data)
-        foundItemCount = 0
-        for item in jsonData:
-            foundItemCount = foundItemCount + 1
-            if (str(item['brand']) == 'CSD中衛' and '口罩' in str(item['prod_name'])):
-                print(str(item['prod_name']) + '\r\n' + str(item['prod_url']))
-                lineNotifyMessage("fK4xZMV7HsgejH8h7dESqKshxSUqhgizPa8FiGzUJuN", str(item['prod_name']),
-                                  str(item['prod_url']))
-                # call Leo for debug
-                lineNotifyMessage("FQdRLF5IMZFyXXuUIFPcYFnnh4Cw8CkKr9fmNcrIiol", str(item['prod_name']),
-                                  str(item['prod_url']))
-            else:
-                print('沒找到口罩')
-        lineNotifyMessage("KWzI24w8OJ6MjgcNPHT4ffvvYOLc0z4gNy5mR2o6J8N", '樂天找到'+str(foundItemCount)+'個項目, 沒有品牌符合 CSD中衛, 口罩商品',
-                          'https://www.rakuten.com.tw/%E4%B8%AD%E8%A1%9B%E5%8F%A3%E7%BD%A9/')
+        result = re.findall(r"\[.*\]", tempData)
+        if len(result) > 0:
+            jsonData = json.loads(result[0])
+            # data = tempData[tempData.index('['):tempData.index(']') + 1]
+            # jsonData = json.loads(data)
+            foundItemCount = 0
+            for item in jsonData:
+                foundItemCount = foundItemCount + 1
+                if (str(item['brand']) == 'CSD中衛' and '口罩' in str(item['prod_name'])):
+                    print(str(item['prod_name']) + '\r\n' + str(item['prod_url']))
+                    lineNotifyMessage("fK4xZMV7HsgejH8h7dESqKshxSUqhgizPa8FiGzUJuN", str(item['prod_name']),
+                                      str(item['prod_url']))
+                    # call Leo for debug
+                    lineNotifyMessage("FQdRLF5IMZFyXXuUIFPcYFnnh4Cw8CkKr9fmNcrIiol", str(item['prod_name']),
+                                      str(item['prod_url']))
+                else:
+                    print('沒找到口罩')
+            lineNotifyMessage("KWzI24w8OJ6MjgcNPHT4ffvvYOLc0z4gNy5mR2o6J8N", '樂天找到'+str(foundItemCount)+'個項目, 沒有品牌符合 CSD中衛, 口罩商品',
+                              'https://www.rakuten.com.tw/%E4%B8%AD%E8%A1%9B%E5%8F%A3%E7%BD%A9/')
+        else:
+            lineNotifyMessage("KWzI24w8OJ6MjgcNPHT4ffvvYOLc0z4gNy5mR2o6J8N",
+                              '樂天沒有找到符合json資料',
+                              'https://www.rakuten.com.tw/%E4%B8%AD%E8%A1%9B%E5%8F%A3%E7%BD%A9/')
     else:
         print('fail')
 
